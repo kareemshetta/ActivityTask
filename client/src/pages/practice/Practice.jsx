@@ -39,17 +39,48 @@ export default function Practice() {
   }, []);
   useEffect(() => {
     if (isFinish && submit) {
-      navigate("/rank", { state: { score: (score / wordList.length) * 100 } });
+      navigate("/rank", {
+        state: { score: calculateScore(score, wordList.length) },
+      });
     }
   }, [isFinish]);
-  useEffect(() => {
-    console.log("Selected value:", selectedValue);
-    console.log(
-      "Selected value from radio:",
-      selectedRadioButton?.current?.value
-    );
-  }, [selectedValue]);
 
+  const calculateScore = (score, total) => {
+    return (score / total) * 100;
+  };
+  const handleSubmitButton = (_) => {
+    // here we check if he choose correct answer just update score
+    // setCorrect answer True so we can give user feedback
+    if (selectedValue === wordList[questionNo].pos) {
+      setCorrectAnswer(true);
+
+      setScore((prevScore) => prevScore + 1);
+      console.log("score is :", score);
+    }
+    // here we make sure he can't submit until user choose value
+    if (selectedValue !== "") {
+      setSubmit(true);
+      setDisabled(true);
+      if (questionNo == 9) {
+        setIsFinished(true);
+      }
+    }
+  };
+
+  const handleNextButton = (_) => {
+    // here we make sure that he can't move to next question until
+    //there're question and user selected value and click submit button
+    if (questionNo !== 9 && selectedValue != "" && submit) {
+      setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
+      // here we rest our state
+      setCorrectAnswer(false);
+      setSelectedValue((pre) => "");
+      selectedRadioButton.current = null;
+      setSubmit(false);
+      setDisabled(false);
+      console.log(questionNo);
+    }
+  };
   return (
     <Container className="text-start mt-5 bg-light p-5 rounded-2 ">
       <Alert key={"light"} variant={"light"} className="px-4 fs-5 lead">
@@ -94,80 +125,25 @@ export default function Practice() {
           <Button
             variant="outline-primary"
             className="me-5"
-            onClick={(_) => {
-              if (selectedValue === wordList[questionNo].pos) {
-                setCorrectAnswer(true);
-
-                setScore((prevScore) => prevScore + 1);
-                console.log("score is :", score);
-              }
-              if (selectedValue != "") {
-                setSubmit(true);
-                setDisabled(true);
-                if (questionNo == 9) {
-                  setIsFinished(true);
-                }
-              }
-            }}
+            onClick={handleSubmitButton}
           >
             Submit
           </Button>
           <Button
             variant="outline-success"
             className="me-5 px-4"
-            onClick={(_) => {
-              if (questionNo !== 9 && selectedValue != "" && submit) {
-                setQuestionNo((prevQuestionNo) => prevQuestionNo + 1);
-                setCorrectAnswer(false);
-                setSelectedValue((pre) => "");
-                selectedRadioButton.current = null;
-                setSubmit(false);
-                setDisabled(false);
-                console.log(questionNo);
-              }
-            }}
+            onClick={handleNextButton}
           >
             Next
           </Button>
 
           <ProgressBar
             className="w-100"
-            now={(score / wordList.length) * 100}
-            label={(score / wordList.length) * 100 + `%`}
+            now={calculateScore(score, wordList.length)}
+            label={calculateScore(score, wordList.length) + `%`}
           />
         </div>
       </div>
     </Container>
   );
 }
-
-{
-  /* <div key={`inline-${type}`} className="mb-3"> */
-}
-{
-  /* <div
-            className="bg-light py-3 px-4 my-2 border-end border-4    "
-            style={{ borderRadius: " 10px 0px 0px 10px" }}
-          /> */
-}
-/* 
-        <Alert variant={selectedValue === `noun` ? "primary" : "light"}>
-          <Form.Check
-            onChange={handleRadioClick}
-            value={"noun"}
-            label="noun"
-            name="group1"
-            type="radio"
-            id={`inline-radio-1`}
-          />
-        </Alert>
-        <Alert variant={selectedValue === `adjective` ? "primary" : "light"}>
-          <Form.Check
-            onChange={handleRadioClick}
-            value={"adjective"}
-            label="adjective"
-            name="group1"
-            type="radio"
-            id={`inline-radio-1`}
-          />
-        </Alert> */

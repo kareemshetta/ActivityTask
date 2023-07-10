@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Rank from "../pages/rank/Rank";
-import Practice from "../pages/practice/Practice";
+const Practice = React.lazy(() => import("../pages/practice/Practice"));
+const Rank = React.lazy(() => import("../pages/rank/Rank"));
 export default function AppRouter() {
   return (
     <Routes>
