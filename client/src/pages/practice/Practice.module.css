@@ -1,0 +1,9 @@
+.flex-width {
+  width: 100%;
+}
+
+@media (min-width: 772px) {
+  .flex-width {
+    width: 35%;
+  }
+}

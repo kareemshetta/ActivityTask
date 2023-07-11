@@ -5,6 +5,8 @@ import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
+import { toastMessage } from "../../utils/toasfiy";
+
 export default function Rank() {
   const [rank, setRank] = useState(0);
   const location = useLocation();
@@ -15,7 +17,8 @@ export default function Rank() {
     const getWords = async () => {
       try {
         const { data } = await axiosInstance.post("ranks", { score: score });
-        setRank(data.rank);
+        setRank(Math.round(data.rank));
+        toastMessage("success", `your rank is ${Math.round(data.rank)}`);
       } catch (err) {
         console.log(err);
       }
@@ -25,25 +28,33 @@ export default function Rank() {
   }, []);
 
   return (
-    <div className=" container text-center bg-light p-5  mt-5 d-flex justify-content-center ">
-      {rank == 0 ? (
-        <Spinner animation="border" variant="info" />
-      ) : (
-        <div className="">
-          <Alert variant="info" className="w-100">
-            <strong className="me-2 font-weight-bold">Your Rank is: </strong>
-            {rank}
-          </Alert>
-          <Button
-            className="btn-info"
-            onClick={(_) => {
-              navigate("/");
-            }}
-          >
-            Try Again
-          </Button>
-        </div>
-      )}
+    <div className="container">
+      <div className="  text-center bg-light p-5  mt-5 d-flex justify-content-center rounded-2 border border-1 border-info shadow ">
+        {rank == 0 ? (
+          <Spinner animation="border" variant="info" />
+        ) : (
+          <div className="">
+            <Alert variant="info" className="w-100">
+              <strong className="me-2 lead">Your Rank is: </strong>
+              <span
+                className="badge bg-light text-success "
+                style={{ fontSize: "1.0rem" }}
+              >
+                {rank}
+              </span>
+            </Alert>
+            <Button
+              variant="info"
+              className=" text-white px-4"
+              onClick={(_) => {
+                navigate("/");
+              }}
+            >
+              Try Again
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

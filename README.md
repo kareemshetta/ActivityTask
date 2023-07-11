@@ -1,9 +1,11 @@
 # ActivityTask
 
-first clone this repo
-then move to server folder and run this code npm install after that run this command npm start
+1- clone this repository
+2- move to server folder and run this command npm install
+3- run this command npm start
 server will start
 ######################################
-move to client folder and run this command npm install after that run npm start
+4-move to client folder and run this command npm install
+5-run this command run npm start
 client will start
 #the end
