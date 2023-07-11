@@ -65,7 +65,7 @@ export default function Practice() {
     // this condition if is met ,this means that user submit answer and now
     // we can move to another question
     if (next) {
-      handleNextButton();
+      handleContinueButton();
     } else {
       // this means we are in submit role
       // here we check if he choose correct answer just update score
@@ -97,7 +97,7 @@ export default function Practice() {
     }
   };
 
-  const handleNextButton = (_) => {
+  const handleContinueButton = (_) => {
     // here we make sure that he can't move to next question until
     //there're question and user selected value and click submit button
 
